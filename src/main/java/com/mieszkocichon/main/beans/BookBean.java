@@ -4,7 +4,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class BookBean
 {
-    private final String id;
+    private String id;
     private final String name;
     private final String author;
     private final long year;
@@ -15,6 +15,10 @@ public class BookBean
         this.name = name;
         this.author = author;
         this.year = year;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getId() {

@@ -34,16 +34,34 @@ public class DashboardService {
 
     public void add(BookBean book)
     {
-        this.books.add(book);
+        books.add(book);
     }
 
     public void removeById(String id)
     {
-        this.books = books.stream().filter(book -> !Objects.equals(book.getId(), id)).collect(Collectors.toList());
+        books = deleteBookById(id);
     }
 
     public List<BookBean> getAll()
     {
-        return new ArrayList<>(this.books);
+        return new ArrayList<>(books);
+    }
+
+    public List<BookBean> updateById(String id, BookBean bookBean) {
+        List<BookBean> allBooksById = books.stream().filter(book -> Objects.equals(book.getId(), id)).collect(Collectors.toList());
+
+        if (allBooksById.isEmpty()) {
+            return null;
+        }
+
+        books = deleteBookById(id);
+        bookBean.setId(id);
+        books.add(bookBean);
+
+        return books;
+    }
+
+    private List<BookBean> deleteBookById(String id) {
+        return books.stream().filter(book -> !Objects.equals(book.getId(), id)).collect(Collectors.toList());
     }
 }

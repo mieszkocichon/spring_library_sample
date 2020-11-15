@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,5 +63,15 @@ public class DashboardController {
         LOGGER.info("Book has been removed" + book);
 
         return book;
+    }
+
+    @RequestMapping(value = "/dashboard/{id}", method = RequestMethod.POST)
+    @ResponseBody
+    public List<BookBean> update(@PathVariable String id, @RequestBody BookBean bookBean) {
+        List<BookBean> books = dashboardService.updateById(id, bookBean);
+
+        LOGGER.info("Book has been updated" + bookBean);
+
+        return books;
     }
 }
