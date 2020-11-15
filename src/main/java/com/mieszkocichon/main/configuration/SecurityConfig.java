@@ -18,7 +18,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(s -> userService.getUserByName(s));
+        auth.userDetailsService(s -> userService.loadUserByUsername(s));
+    }
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userService);
     }
 
     @Override
@@ -26,8 +31,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.antMatcher("/**").authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers(HttpMethod.GET, "/dashboard").hasRole("USER")
+                .antMatchers(HttpMethod.POST, "/dashboard").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/dashboard/{id}").hasRole("ADMIN")
                 .anyRequest().authenticated().and()
-                .httpBasic().and()
                 .httpBasic().and()
                 .cors().disable()
                 .csrf().disable();

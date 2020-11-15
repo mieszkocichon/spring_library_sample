@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.Objects;
 
 @Service
-public class UserDetailsService implements UserDetails {
+public class UserDetailsConfig implements UserDetails {
 
     private static final long serialVersionUID = 1L;
 
@@ -23,14 +23,14 @@ public class UserDetailsService implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public static UserDetailsService build(UserBean userBean) {
-        UserDetailsService userDetailsService = new UserDetailsService();
-        userDetailsService.setId(userBean.getId());
-        userDetailsService.setUsername(userBean.getName());
-        userDetailsService.setPassword(userBean.getPassword());
-        userDetailsService.setAuthorities(Collections.singletonList(new SimpleGrantedAuthority(String.format("ROLE_%s", userBean.getRole().name()))));
+    public static UserDetailsConfig build(UserBean userBean) {
+        UserDetailsConfig userDetailsConfig = new UserDetailsConfig();
+        userDetailsConfig.setId(userBean.getId());
+        userDetailsConfig.setUsername(userBean.getName());
+        userDetailsConfig.setPassword(userBean.getPassword());
+        userDetailsConfig.setAuthorities(Collections.singletonList(new SimpleGrantedAuthority(String.format("ROLE_%s", userBean.getRole().name()))));
 
-        return userDetailsService;
+        return userDetailsConfig;
     }
 
     public void setId(String id) {
@@ -88,7 +88,7 @@ public class UserDetailsService implements UserDetails {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserDetailsService that = (UserDetailsService) o;
+        UserDetailsConfig that = (UserDetailsConfig) o;
         return Objects.equals(id, that.id) &&
                 Objects.equals(username, that.username) &&
                 Objects.equals(password, that.password) &&
