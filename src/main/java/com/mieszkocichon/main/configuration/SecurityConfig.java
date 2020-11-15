@@ -1,5 +1,6 @@
 package com.mieszkocichon.main.configuration;
 
+import com.mieszkocichon.main.enums.UserRole;
 import com.mieszkocichon.main.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -30,34 +31,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.antMatcher("/**").authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers(HttpMethod.GET, "/dashboard").hasRole("USER")
-                .antMatchers(HttpMethod.POST, "/dashboard").hasRole("ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/dashboard/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/dashboard").hasRole(UserRole.USER.name())
+                .antMatchers(HttpMethod.POST, "/dashboard").hasRole(UserRole.ADMIN.name())
+                .antMatchers(HttpMethod.DELETE, "/dashboard/{id}").hasRole(UserRole.ADMIN.name())
                 .anyRequest().authenticated().and()
                 .httpBasic().and()
                 .cors().disable()
                 .csrf().disable();
-//        http
-//                // configure the HttpSecurity to only be invoked when matching the provided ant pattern
-//                .antMatcher("/**")
-//                // configure restricting access
-//                .authorizeRequests()
-//                // open api is... opened
-//                .antMatchers("/").permitAll()
-//                // admin api restricted to... ADMIN
-//                .antMatchers("/**").hasRole("ADMIN")
-//                // and the rest is allowed by any authenticated user
-//                .anyRequest().authenticated()
-//                .and()
-//                // setup login & logout
-//                .formLogin()
-//                .loginPage("/login")
-//                .permitAll()
-//                .and()
-//                .logout()
-//                .logoutSuccessUrl("/")
-//                .permitAll()
-//                .and()
-//                .httpBasic();
     }
 }
