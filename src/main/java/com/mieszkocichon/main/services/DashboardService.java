@@ -44,7 +44,7 @@ public class DashboardService {
 
     public List<BookBean> getAll()
     {
-        return new ArrayList<>(books);
+        return books;
     }
 
     public List<BookBean> updateById(String id, BookBean bookBean) {

@@ -33,6 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .antMatchers(HttpMethod.GET, "/dashboard").hasRole(UserRole.USER.name())
                 .antMatchers(HttpMethod.POST, "/dashboard").hasRole(UserRole.ADMIN.name())
+                .antMatchers(HttpMethod.POST, "/dashboard/{id}").hasRole(UserRole.ADMIN.name())
                 .antMatchers(HttpMethod.DELETE, "/dashboard/{id}").hasRole(UserRole.ADMIN.name())
                 .anyRequest().authenticated().and()
                 .httpBasic().and()

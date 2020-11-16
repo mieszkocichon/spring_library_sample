@@ -2,6 +2,7 @@ package com.mieszkocichon.main.configuration;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mieszkocichon.main.beans.UserBean;
+import com.mieszkocichon.main.enums.UserRole;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +19,7 @@ public class UserDetailsConfig implements UserDetails {
 
     private String id;
     private String username;
+    private UserRole userRole;
     @JsonIgnore
     private String password;
 
@@ -28,7 +30,10 @@ public class UserDetailsConfig implements UserDetails {
         userDetailsConfig.setId(userBean.getId());
         userDetailsConfig.setUsername(userBean.getName());
         userDetailsConfig.setPassword(userBean.getPassword());
-        userDetailsConfig.setAuthorities(Collections.singletonList(new SimpleGrantedAuthority(String.format("ROLE_%s", userBean.getRole().name()))));
+
+        UserRole userRole = userBean.getRole();
+        userDetailsConfig.setUserRole(userRole);
+        userDetailsConfig.setAuthorities(Collections.singletonList(new SimpleGrantedAuthority(String.format("ROLE_%s", userRole.name()))));
 
         return userDetailsConfig;
     }
@@ -45,8 +50,16 @@ public class UserDetailsConfig implements UserDetails {
         this.password = password;
     }
 
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
+    }
+
     public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
         this.authorities = authorities;
+    }
+
+    public UserRole getUserRole() {
+        return userRole;
     }
 
     @Override

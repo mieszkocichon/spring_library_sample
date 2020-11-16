@@ -5,11 +5,12 @@ import com.mieszkocichon.main.services.DashboardService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,7 +37,7 @@ public class DashboardController {
 
     @RequestMapping(value = "/dashboard/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public BookBean get(@PathVariable String id) {
+    public BookBean getById(@PathVariable String id) {
         BookBean book = dashboardService.findById(id);
 
         LOGGER.info("Book has been found" + book);
@@ -73,5 +74,11 @@ public class DashboardController {
         LOGGER.info("Book has been updated" + bookBean);
 
         return books;
+    }
+
+    @ExceptionHandler(value = Exception.class)
+    @ResponseBody
+    public ResponseEntity<String> HandleInternalError(InternalError ex) {
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 }
