@@ -1,6 +1,6 @@
 package com.mieszkocichon.main.beans;
 
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.UUID;
 
 public class BookBean
 {
@@ -11,7 +11,7 @@ public class BookBean
 
     public BookBean(String name, String author, long year)
     {
-        this.id = ThreadLocalRandom.current().nextInt(20) + 1 + "";
+        this.id = UUID.randomUUID() + "";
         this.name = name;
         this.author = author;
         this.year = year;
