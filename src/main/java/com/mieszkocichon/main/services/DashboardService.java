@@ -12,13 +12,12 @@ public class DashboardService {
 
     public DashboardService()
     {
-        List<BookBean> bookInit = Arrays.asList(
+        books = new ArrayList<>(Arrays.asList(
                 new BookBean("Jaś i Małgosia", "Wilhelm Karl Grimm", 1_950L),
                 new BookBean("Grube wióry", "Pacześ Rafał", 2_018L),
                 new BookBean("Powrót", "Katarzyna Nosowska", 1_990L),
                 new BookBean("Twoja wewnętrzna moc", "Agnieszka Maciąg", 2_010L)
-        );
-        books = new ArrayList<>(bookInit);
+        ));
     }
 
     public BookBean findById(String id)

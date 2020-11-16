@@ -15,8 +15,6 @@ import java.util.Objects;
 @Service
 public class UserDetailsConfig implements UserDetails {
 
-    private static final long serialVersionUID = 1L;
-
     private String id;
     private String username;
     private UserRole userRole;
