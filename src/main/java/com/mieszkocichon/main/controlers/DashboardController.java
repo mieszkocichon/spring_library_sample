@@ -3,11 +3,13 @@ package com.mieszkocichon.main.controlers;
 import com.mieszkocichon.main.beans.BookBean;
 import com.mieszkocichon.main.exception.ErrorMessage;
 import com.mieszkocichon.main.services.DashboardService;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@Slf4j
 public class DashboardController {
 
     private static final Class THIS_CLASS = DashboardController.class;
@@ -33,10 +36,6 @@ public class DashboardController {
         LOGGER.info(String.format("User name: %s", userName));
         LOGGER.info(String.format("User roles: %s", userRoles));
 
-        if (userName != null) {
-            throw new InternalError("");
-        }
-
         return dashboardService.getAll();
     }
 
@@ -50,8 +49,9 @@ public class DashboardController {
         return book;
     }
 
-    @RequestMapping(value = "/dashboard", method = RequestMethod.POST)
+    @PostMapping(value = "/dashboard")
     @ResponseBody
+    @Secured("ROLE_ADMIN")
     public List<BookBean> add(@RequestBody BookBean bookBean) {
         dashboardService.add(bookBean);
 
@@ -61,6 +61,7 @@ public class DashboardController {
     }
 
     @RequestMapping(value = "/dashboard/{id}", method = RequestMethod.DELETE)
+    @Secured("ROLE_ADMIN")
     public BookBean remove(@PathVariable String id) {
         BookBean book = dashboardService.findById(id);
 
@@ -84,9 +85,10 @@ public class DashboardController {
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
     public ResponseEntity<ErrorMessage> HandleInternalError(InternalError ex) {
+        log.warn(ex.getMessage());
         return new ResponseEntity<>(new ErrorMessage(
                 "Not found",
                 ex.getMessage(),
-                ""), HttpStatus.NOT_FOUND);
+                ""), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

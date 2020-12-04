@@ -33,6 +33,9 @@ public class DashboardService {
 
     public void add(BookBean book)
     {
+        if (book.getId() == null) {
+            book.setId(UUID.randomUUID() + "");
+        }
         books.add(book);
     }
 

@@ -1,13 +1,16 @@
 package com.mieszkocichon.main.beans;
 
+import lombok.NoArgsConstructor;
+
 import java.util.UUID;
 
+@NoArgsConstructor
 public class BookBean
 {
     private String id;
-    private final String name;
-    private final String author;
-    private final long year;
+    private String name;
+    private String author;
+    private long year;
 
     public BookBean(String name, String author, long year)
     {
